@@ -10,6 +10,7 @@ export const initDB = () => {
       role TEXT NOT NULL,
       pin TEXT NOT NULL
     );
+    
 
     CREATE TABLE IF NOT EXISTS products (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
