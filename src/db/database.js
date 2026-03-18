@@ -8,9 +8,9 @@ export const initDB = () => {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       role TEXT NOT NULL,
-      pin TEXT NOT NULL
+      pin TEXT NOT NULL,
+      created_at TEXT DEFAULT (datetime('now', 'localtime'))
     );
-    
 
     CREATE TABLE IF NOT EXISTS products (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -18,12 +18,13 @@ export const initDB = () => {
       category TEXT,
       buy_price REAL NOT NULL,
       sell_price REAL NOT NULL,
-      quantity INTEGER NOT NULL DEFAULT 0
+      quantity INTEGER NOT NULL DEFAULT 0,
+      updated_at TEXT DEFAULT (datetime('now', 'localtime'))
     );
 
     CREATE TABLE IF NOT EXISTS sales (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      date TEXT NOT NULL,
+      date TEXT DEFAULT (datetime('now', 'localtime')),
       total REAL NOT NULL,
       cashier TEXT NOT NULL
     );
@@ -38,7 +39,7 @@ export const initDB = () => {
 
     CREATE TABLE IF NOT EXISTS expenses (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      date TEXT NOT NULL,
+      date TEXT DEFAULT (datetime('now', 'localtime')),
       amount REAL NOT NULL,
       description TEXT
     );
@@ -48,9 +49,20 @@ export const initDB = () => {
       product_id INTEGER NOT NULL,
       change INTEGER NOT NULL,
       reason TEXT,
-      date TEXT NOT NULL
+      date TEXT DEFAULT (datetime('now', 'localtime'))
     );
   `);
+};
+
+export const getCurrentDateTime = () => {
+  return new Date().toLocaleString("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
 };
 
 export default db;
