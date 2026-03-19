@@ -1,29 +1,37 @@
-import { useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useEffect } from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 import { Provider } from "react-redux";
 import store from "./src/store/index";
 import { initDB } from "./src/db/database";
+import LoginScreen from "./src/screens/LoginScreen";
+import DashboardScreen from "./src/screens/DashboardScreen";
+
+const Stack = createStackNavigator();
 
 export default function App() {
   useEffect(() => {
-    initDB();
-    console.log("Database initialized successfully");
+    initDB().then(() => {
+      console.log("App ready");
+    });
   }, []);
 
   return (
     <Provider store={store}>
-      <View style={styles.container}>
-        <Text>Shop Manager App</Text>
-      </View>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Login">
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Dashboard"
+            component={DashboardScreen}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
     </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

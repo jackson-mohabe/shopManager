@@ -1,8 +1,27 @@
-import * as SQLite from "expo-sqlite";
+import { Platform } from "react-native";
 
-const db = SQLite.openDatabaseSync("shopmanager.db");
+let db = null;
 
-export const initDB = () => {
+export const initDB = async () => {
+  if (Platform.OS === "web") {
+    console.log("Web platform detected — using localStorage");
+    if (!localStorage.getItem("products"))
+      localStorage.setItem("products", JSON.stringify([]));
+    if (!localStorage.getItem("sales"))
+      localStorage.setItem("sales", JSON.stringify([]));
+    if (!localStorage.getItem("expenses"))
+      localStorage.setItem("expenses", JSON.stringify([]));
+    if (!localStorage.getItem("stock_logs"))
+      localStorage.setItem("stock_logs", JSON.stringify([]));
+    if (!localStorage.getItem("users"))
+      localStorage.setItem("users", JSON.stringify([]));
+    console.log("Web database initialized successfully");
+    return;
+  }
+
+  const SQLite = require("expo-sqlite");
+  db = SQLite.openDatabaseSync("shopmanager.db");
+
   db.execSync(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -52,6 +71,8 @@ export const initDB = () => {
       date TEXT DEFAULT (datetime('now', 'localtime'))
     );
   `);
+
+  console.log("Mobile database initialized successfully");
 };
 
 export const getCurrentDateTime = () => {
