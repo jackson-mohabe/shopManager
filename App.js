@@ -13,11 +13,30 @@ import ReportsScreen from "./src/screens/ReportsScreen";
 
 const Stack = createStackNavigator();
 
+const autoBackup = () => {
+  try {
+    const data = {
+      products: localStorage.getItem("products") || "[]",
+      sales: localStorage.getItem("sales") || "[]",
+      expenses: localStorage.getItem("expenses") || "[]",
+      backup_time: new Date().toLocaleString(),
+    };
+    localStorage.setItem("auto_backup", JSON.stringify(data));
+    console.log("Auto backup saved at", data.backup_time);
+  } catch (error) {
+    console.error("Auto backup failed:", error);
+  }
+};
+
 export default function App() {
   useEffect(() => {
     initDB().then(() => {
       console.log("App ready");
     });
+
+    autoBackup();
+    const backupInterval = setInterval(autoBackup, 5 * 60 * 1000);
+    return () => clearInterval(backupInterval);
   }, []);
 
   return (
