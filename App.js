@@ -12,6 +12,22 @@ import StockScreen from "./src/screens/StockScreen";
 import ExpensesScreen from "./src/screens/ExpensesScreen";
 import ReportsScreen from "./src/screens/ReportsScreen";
 
+// Fix React Navigation web style issue
+import { StyleSheet as RNStyleSheet } from "react-native";
+const _create = RNStyleSheet.create.bind(RNStyleSheet);
+RNStyleSheet.create = (styles) => {
+  Object.keys(styles).forEach((key) => {
+    if (styles[key] && typeof styles[key] === "object") {
+      Object.keys(styles[key]).forEach((prop) => {
+        if (Array.isArray(styles[key][prop])) {
+          styles[key][prop] = styles[key][prop].join(" ");
+        }
+      });
+    }
+  });
+  return _create(styles);
+};
+
 const Stack = createNativeStackNavigator();
 
 const autoBackup = () => {
