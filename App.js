@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
 import { Provider } from "react-redux";
 import store from "./src/store/index";
 import { initDB } from "./src/db/database";
@@ -11,7 +12,7 @@ import StockScreen from "./src/screens/StockScreen";
 import ExpensesScreen from "./src/screens/ExpensesScreen";
 import ReportsScreen from "./src/screens/ReportsScreen";
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 const autoBackup = () => {
   try {

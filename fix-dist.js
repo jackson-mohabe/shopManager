@@ -23,4 +23,17 @@ if (fs.existsSync(expoDir)) {
   });
 }
 
+// Fix t.join error - patch style arrays in bundle
+files.forEach((file) => {
+  if (file.endsWith(".js")) {
+    const filePath = path.join(expoDir, file);
+    let content = fs.readFileSync(filePath, "utf8");
+    content = content.replace(
+      /\.join\(" "\)/g,
+      '||(typeof t==="object"&&!Array.isArray(t)?"":t.join(" "))',
+    );
+    fs.writeFileSync(filePath, content);
+  }
+});
+
 console.log("All fixes applied");

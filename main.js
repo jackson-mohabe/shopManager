@@ -44,6 +44,7 @@ function createWindow() {
   });
 
   mainWindow.loadURL("http://127.0.0.1:3000");
+  mainWindow.webContents.openDevTools();
 
   mainWindow.once("ready-to-show", function () {
     mainWindow.show();
