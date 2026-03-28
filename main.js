@@ -1,4 +1,8 @@
-"use strict";
+process.on("uncaughtException", (err) => {
+  require("fs").writeFileSync("electron-error.log", err.stack);
+  process.exit(1);
+});
+("use strict");
 
 const { app, BrowserWindow } = require("electron");
 const express = require("express");
