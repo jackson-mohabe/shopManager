@@ -7,8 +7,14 @@ let html = fs.readFileSync(indexPath, "utf8");
 html = html.replace(/src="\//g, 'src="./');
 html = html.replace(/href="\//g, 'href="./');
 
-// Inject process polyfill
-const polyfill = `<script>if(!window.process)window.process={env:{},on:function(){},off:function(){},emit:function(){},platform:"browser"};</script>`;
+// Inject polyfills
+const polyfill = `<script>
+if(!window.process)window.process={env:{},on:function(){},off:function(){},emit:function(){},platform:"browser"};
+if(!window.global)window.global=window;
+var util=window.util||{};
+util.inherits=function(c,p){if(p){c.prototype=Object.create(p&&p.prototype,{constructor:{value:c,enumerable:false,writable:true,configurable:true}});c.super_=p;}};
+window.util=util;
+</script>`;
 html = html.replace("<head>", "<head>" + polyfill);
 
 fs.writeFileSync(indexPath, html);
@@ -23,10 +29,6 @@ if (fs.existsSync(expoDir)) {
       let content = fs.readFileSync(filePath, "utf8");
       content = content.replace(/typeof __dirname/g, '"string"');
       content = content.replace(/__dirname/g, '""');
-      content = content.replace(
-        /([a-zA-Z])\.join\(" "\)/g,
-        '(Array.isArray($1)?$1.join(" "):"")',
-      );
       fs.writeFileSync(filePath, content);
       console.log("Fixed:", file);
     }

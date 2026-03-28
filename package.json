@@ -23,11 +23,14 @@
     "expo-sqlite": "~55.0.11",
     "expo-status-bar": "~55.0.4",
     "express": "^4.18.2",
+    "os-browserify": "^0.3.0",
+    "path-browserify": "^1.0.1",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-native": "0.83.2",
     "react-native-web": "^0.21.0",
     "react-redux": "^9.2.0",
+    "util": "^0.12.5",
     "xlsx": "^0.18.5"
   },
   "private": true,
@@ -52,5 +55,13 @@
       "main.js",
       "package.json"
     ]
+  },
+  "browser": {
+    "electron": false,
+    "fs": false,
+    "path": false,
+    "util": false,
+    "os": false,
+    "crypto": false
   }
 }
